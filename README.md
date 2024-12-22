@@ -5,6 +5,7 @@ Proyek ini berfokus pada pengujian fitur login dari sebuah aplikasi. Pengujian d
 Proyek ini bertujuan untuk mendemonstrasikan kerangka kerja pengujian web untuk menguji fungsi login pada [aplikasi SauceDemo](https://www.saucedemo.com/).
 
 ## Teknologi
+- **java** untuk bahasa pemrograman yang digunakan
 - **Cucumber** untuk pengembangan berbasis perilaku (Behavior-Driven Development/BDD).
 - **Selenium** untuk otomatisasi berbasis browser.
 - **JUnit** sebagai eksekutor pengujian.
@@ -58,7 +59,7 @@ Aplikasi telah diuji menggunakan skenario berikut:
 2. Instal semua dependensi yang dibutuhkan (jika ada).
 3. Jalankan file fitur menggunakan alat pengujian yang sesuai:
    ```bash
-   cucumber features/login.feature
+   src/test/java/features/login.feature
    ```
 4. Periksa hasil pengujian.
 
