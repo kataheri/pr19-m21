@@ -18,7 +18,7 @@ on:
 jobs:
   setup:
     name: Setup Environment
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - name: Checkout Code
@@ -32,7 +32,7 @@ jobs:
 
   api-tests:
     name: Run API Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: setup
 
     steps:
@@ -59,7 +59,7 @@ jobs:
 
   web-ui-tests:
     name: Run Web UI Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: setup
 
     steps:
@@ -86,7 +86,7 @@ jobs:
 
   build-and-deploy:
     name: Build and Deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [api-tests, web-ui-tests]
 
     steps:
