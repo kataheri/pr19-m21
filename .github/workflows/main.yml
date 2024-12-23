@@ -42,11 +42,14 @@ jobs:
     - name: Grant Execute Permission for Gradlew
       run: chmod +x ./gradlew
 
+    - name: Navigate to API Directory
+      run: cd api
+
     - name: Install Dependencies
-      run: ./gradlew api:dependencies
+      run: ../gradlew dependencies
 
     - name: Run API Tests
-      run: ./gradlew api:test
+      run: ../gradlew test
 
     - name: Upload API Test Results
       uses: actions/upload-artifact@v3
@@ -66,11 +69,14 @@ jobs:
     - name: Grant Execute Permission for Gradlew
       run: chmod +x ./gradlew
 
+    - name: Navigate to Web UI Directory
+      run: cd web-ui
+
     - name: Install Dependencies
-      run: ./gradlew web-ui:dependencies
+      run: ../gradlew dependencies
 
     - name: Run Web UI Tests
-      run: ./gradlew web-ui:test
+      run: ../gradlew test
 
     - name: Upload Web UI Test Results
       uses: actions/upload-artifact@v3
@@ -91,10 +97,10 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build API
-      run: ./gradlew api:build
+      run: ./gradlew :api:build
 
     - name: Build Web UI
-      run: ./gradlew web-ui:build
+      run: ./gradlew :web-ui:build
 
     - name: Deploy Application
       run: |
