@@ -1,73 +1,51 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
-name: CI/CD Pipeline
+name: Web Automation Workflow
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  api-automation-tests:
-    name: Run API Automation Tests
+  run-automation-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    # download repo
+    - uses: actions/checkout@v3
+    
+    # setup java
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        
+    # install chrome browser
+    - name: Setup Chrome
+      uses: browser-actions/setup-chrome@v0.0.0
+      
+    # setup graldew
+    - name: Setup gradlew
+      run: chmod +x gradlew 
+      
+    # Execute gradle command for running cucumber test
+    - name: Execute Test
+      run: ./gradlew cucumber
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./api-tests
-
-      - name: Run API tests
-        run: npm test
-        working-directory: ./api-tests
-
-      - name: Upload API test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: api-test-results
-          path: ./api-tests/results
-
-  ui-automation-tests:
-    name: Run Web UI Automation Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: 11
-
-      - name: Install Webdriver dependencies
-        run: |
-          ./gradlew dependencies
-        working-directory: ./ui-tests
-
-      - name: Run Web UI tests
-        run: |
-          ./gradlew test
-        working-directory: ./ui-tests
-
-      - name: Upload Web UI test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: ui-test-results
-          path: ./ui-tests/build/reports/tests/test
+    # Archive Test Result
+    - name: Archive Test Result
+      uses: actions/upload-artifact@v3.1.0
+      if: always()
+      with:
+        name: Cucumber Report
+        path: reports
+      
+    # Deploy to Github Pages
+    - name: Deploy report to Github Pages
+      if: always()
+      uses: peaceiris/actions-gh-pages@v3.7.3
+      with:
+        PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PUBLISH_DIR: reports
